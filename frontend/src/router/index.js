@@ -1,17 +1,23 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Todo from "@components/Todo.vue";
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Home from '@views/Home.vue'
 
 const routes = [
   {
-    path: "/",
-    name: "Todo",
-    component: Todo,
+    path: '/:filter',
+    name: 'Home',
+    component: Home,
+    props: true,
   },
-];
+]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHashHistory(),
   routes,
-});
+})
 
-export default router;
+router.beforeEach((to) => {
+  const params = ['all', 'active', 'completed']
+  if (params.every((param) => param !== to.params.filter)) return '/all'
+})
+
+export default router
