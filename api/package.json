@@ -1,0 +1,39 @@
+{
+  "name": "todo-api",
+  "version": "0.0.1",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon --inspect server.js",
+    "start-db": "pg_ctl -D ./db/data -l ./db/data/logfile start",
+    "stop-db": "pg_ctl -D /usr/local/var/postgres stop"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "cheerio": "^1.0.0-rc.3",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "eslint": "6.8.x",
+    "eslint-plugin-import": "2.20.x",
+    "eslint-plugin-node": "11.0.x",
+    "eslint-plugin-promise": "4.2.x",
+    "eslint-plugin-standard": "4.0.x",
+    "eslint-plugin-vue": "6.2.x",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "grant-express": "^4.6.4",
+    "nodemon": "^2.0.6",
+    "pg": "^8.4.2",
+    "pg-hstore": "^2.3.3",
+    "request": "^2.88.2",
+    "sequelize": "^6.6.2"
+  },
+  "engines": {
+    "node": ">=10.13.3",
+    "yarn": ">=1.0.0"
+  },
+  "devDependencies": {
+    "pino": "^6.11.3"
+  }
+}

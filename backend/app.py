@@ -1,11 +1,26 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from flask_sqlalchemy import SQLAlchemy
 from pysondb import db
 
+POSTGRES = {
+    'user': 'postgres',
+    'pw': 'password',
+    'db': 'my_database',
+    'host': 'localhost',
+    'port': '5432',
+}
+
 app = Flask(__name__)
-CORS(app, resources={r"/*":{'origins':"*"}})
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
+db.init_app(app)
+
+
+CORS(app, resources={r"/*": {'origins': "*"}})
 
 database = db.getDb("./database.json")
+db = SQLAlchemy()
+
 
 @app.route("/", methods=["GET", "POST"])
 def api():
@@ -20,6 +35,7 @@ def api():
         database.updateByQuery({"title": title}, {"id": int(str(task_id)[:6])})
     return jsonify(database.getAll())
 
+
 @app.route("/delete", methods=["GET", "POST"])
 def delete_task():
     is_successful = False
@@ -30,6 +46,7 @@ def delete_task():
         is_successful = True
     return jsonify({"deleted": is_successful})
 
+
 @app.route("/update", methods=["GET", "POST"])
 def update_task():
     is_successful = False
@@ -39,13 +56,14 @@ def update_task():
         new_title = incoming_data["title"]
         new_desc = incoming_data["desc"]
         is_completed = incoming_data["isCompleted"]
-        database.updateByQuery({"id": id_to_update}, 
-                                {"title": new_title, 
-                                "desc": new_desc, 
+        database.updateByQuery({"id": id_to_update},
+                               {"title": new_title,
+                                "desc": new_desc,
                                 "completed": is_completed}
-                            )
+                               )
         is_successful = True
     return jsonify({"update": is_successful})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
