@@ -1,6 +1,5 @@
 var router = require("express").Router();
 const postController = require("./db/controllers").post;
-const pocketController = require("./db/controllers").pocket;
 const env = require("../env.js");
 const GetPocket = require("./db/helpers/pocket");
 

@@ -1,25 +1,25 @@
-const Post = require("../models/post");
-const env = require("../../../env");
+const Task = require("../models/task");
+const env = require("../../env");
 
 module.exports = {
   create: function (req, res) {
-    return Post.create({
+    return Task.create({
       title: req.body.title,
     })
-      .then((post) => res.status(201).send(post))
+      .then((task) => res.status(201).send(task))
       .catch((error) => res.status(400).send(error));
   },
 
   list: function (req, res) {
-    return Post.findAll({
+    return Task.findAll({
       order: [["createdAt", "DESC"]],
     })
-      .then((posts) => res.status(200).send(posts))
+      .then((tasks) => res.status(200).send(tasks))
       .catch((error) => res.status(400).send(error));
   },
 
   retrieve: function (req, res) {
-    return Post.findById(req.params.todoId, {
+    return Task.findById(req.params.todoId, {
       include: [
         {
           model: TodoItem,
@@ -27,19 +27,19 @@ module.exports = {
         },
       ],
     })
-      .then((post) => {
-        if (!post) {
+      .then((task) => {
+        if (!task) {
           return res.status(404).send({
-            message: "Post Not Found",
+            message: "Task Not Found",
           });
         }
-        return res.status(200).send(post);
+        return res.status(200).send(task);
       })
       .catch((error) => res.status(400).send(error));
   },
 
   update: function (req, res) {
-    return Post.findById(req.params.todoId, {
+    return Task.findById(req.params.todoId, {
       include: [
         {
           model: TodoItem,
@@ -47,7 +47,7 @@ module.exports = {
         },
       ],
     })
-      .then((post) => {
+      .then((task) => {
         if (!todo) {
           return res.status(404).send({
             message: "Todo Not Found",
@@ -55,17 +55,17 @@ module.exports = {
         }
         return todo
           .update({
-            title: req.body.title || Post.title,
+            title: req.body.title || Task.title,
           })
-          .then(() => res.status(200).send(post))
+          .then(() => res.status(200).send(task))
           .catch((error) => res.status(400).send(error));
       })
       .catch((error) => res.status(400).send(error));
   },
 
   destroy: function (req, res) {
-    return Post.findById(req.params.todoId)
-      .then((post) => {
+    return Task.findById(req.params.todoId)
+      .then((task) => {
         if (!todo) {
           return res.status(400).send({
             message: "Todo Not Found",

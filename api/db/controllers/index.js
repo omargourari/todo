@@ -1,9 +1,5 @@
-const pocket = require("./pocket");
-const post = require("./post");
-const user = require("./user");
+const task = require("./task");
 
 module.exports = {
-  pocket,
-  post,
-  user,
+  task,
 };

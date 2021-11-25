@@ -15,9 +15,9 @@ Start the client
 
 The shell db connection string is:
 
-```
-psql -U $username -d $database -W -h $host
-```
+`psql -U $username -d $database -W -h $host`
+
+`npx sequelize-cli init`
 
 ## Backlog
 
@@ -29,6 +29,8 @@ psql -U $username -d $database -W -h $host
 - ~~installed _pgcli_ to run psql queries from the shell~~
 - ~~started db section refactoring~~
 - ~~added api folder from vock~~
+- installed the Sequelize CLI
+- add migration to sequelize
 - create initial check for db and user status
 - add db instance
 - check todo writing to db and updating

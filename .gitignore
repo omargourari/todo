@@ -338,7 +338,5 @@ securepin.cer
 # Editor directories and files
 .vscode
 *.code-workspace
-api/db/data/pg_stat_tmp/**
-api/db/data/**/**
 
 No newline at end of file

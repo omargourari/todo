@@ -1,5 +1,5 @@
 const stage = process.env.NODE_ENV || "development";
-const env = require("../../../env")["server"];
+const env = require("../../env")["server"];
 
 const config = {
   development: {

@@ -11,7 +11,7 @@ const env = {
       host: "http://localhost:",
       port: 7070,
       db: {
-        name: "todo",
+        name: "tododb",
         dialect: "postgresql",
         hostname: "localhost",
         password: "DnT2L5lcg*6$EA@3kNw^7YtCA9qI",
@@ -22,7 +22,7 @@ const env = {
           max: 5,
           min: 0,
         },
-        username: "todoUser",
+        username: "todouser",
       },
     },
     production: {
