@@ -14,10 +14,14 @@ Start the client
 `npm run serve`
 
 The shell db connection string is:
-
 `psql -U $username -d $database -W -h $host`
 
+## Sequelize commands
 `npx sequelize-cli init`
+
+`npx sequelize-cli db:create`
+
+`npx sequelize-cli db:drop`
 
 ## Backlog
 

@@ -1,14 +1,21 @@
 import { createStore } from 'vuex'
+import axios from 'axios'
+// const stage = process.env.NODE_ENV || 'development'
 
-const STORAGE_KEY = 'todo'
+const STORAGE_KEY = 'vue-todo-pwa'
 
-// initial state
+const defaultTodos = [
+  { id: 1, text: 'Learn JavaScript', done: true },
+  { id: 2, text: 'Learn Vue 3', done: true },
+  { id: 3, text: 'Learn Bootstrap 5', done: false },
+  { id: 4, text: 'Build something awesome!', done: false },
+]
+
 const state = {
-  todos: {},
+  todos: defaultTodos,
   addTodoVisible: false,
 }
 
-// mutations
 const mutations = {
   addTodo(state, todo) {
     state.todos.push(todo)
@@ -29,14 +36,18 @@ const mutations = {
   },
 }
 
-// actions
 const actions = {
-  addTodo({ commit }, text) {
-    commit('addTodo', {
-      id: Date.now(),
-      text,
-      done: false,
-    })
+  getAllTodos({ commit }) {
+    commit('getAllTodos')
+  },
+
+  addTodo: ({ commit }, id) => {
+    axios
+      .get(`http://localhost:7070/api/todo/${id}`)
+      .then((response) => commit('addTodo', response.data))
+      .catch((e) => {
+        console.log(e)
+      })
   },
 
   removeTodo({ commit }, todo) {
@@ -49,12 +60,6 @@ const actions = {
 
   editTodo({ commit }, { todo, value }) {
     commit('editTodo', { todo, text: value })
-  },
-
-  toggleAll({ state, commit }, done) {
-    state.todos.forEach((todo) => {
-      commit('editTodo', { todo, done })
-    })
   },
 
   clearCompleted({ state, commit }) {

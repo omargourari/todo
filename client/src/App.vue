@@ -10,6 +10,9 @@ export default {
     Header,
     Sidebar,
   },
+  created: function () {
+    this.$store.dispatch('addTodo', 2)
+  },
 }
 </script>
 

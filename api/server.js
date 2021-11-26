@@ -1,29 +1,16 @@
 const express = require("express");
 const compression = require("compression");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 const env = require("./env.js");
-const models = require("./db/models");
-const taskController = require("./db/controllers").task;
-const pino = require("pino");
-// const routes = require("./routes");
+const models = require("./models");
 
-app.use(cors());
-app.use(pino);
-
-app.get("/", function (req, res) {});
-
-app.post("/api/tasks", (req, res) => {
-  taskController
-    .list(req.params.limit)
-    .then((posts) => res.status(200).json(posts.rows))
-    .catch((e) => console.error(e));
-});
-
-app.post("/api/pocket/fetchAll", (req, res) => {
-  userController.findOrCreate().then(() => taskController.list());
-});
-
+// Enable gzip compression
+app.use(compression());
+// Parse incoming requests data (https://github.com/expressjs/body-parser)
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("dist"), (res, req, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -33,9 +20,10 @@ app.use(express.static("dist"), (res, req, next) => {
   next();
 });
 
-// Enable gzip compression
-app.use(compression());
+// if (NODE_ENV !== "production") {}
+app.use(cors());
 
+require("./routes")(app);
 // Launch app to listen to specified port
 models.sequelize.sync().then(() => {
   app.listen(env.server.development.port, function () {
