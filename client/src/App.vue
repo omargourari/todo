@@ -11,7 +11,7 @@ export default {
     Sidebar,
   },
   created: function () {
-    this.$store.dispatch('addTodo', 2)
+    this.$store.dispatch('getAllTodos')
   },
 }
 </script>

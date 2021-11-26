@@ -5,9 +5,9 @@ export default {
     return {}
   },
   computed: {
-    remaining() {
-      return this.todos.filter((todo) => !todo.done).length
-    },
+    // remaining() {
+    //   return this.todos.filter((todo) => !todo.done).length || '0'
+    // },
     todos() {
       return this.$store.state.todos
     },
@@ -28,9 +28,9 @@ export default {
     <span :class="$style.sidebarAddTask" @click="showAddTaskInput">
       <font-awesome-icon icon="plus" />
     </span>
-    <span :class="$style.sidebarTotalTodos">
+    <!-- <span :class="$style.sidebarTotalTodos">
       {{ remaining }}
-    </span>
+    </span> -->
   </aside>
 </template>
 

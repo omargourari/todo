@@ -2,7 +2,7 @@
   <input
     v-show="addTodoVisible"
     ref="addTaskInput"
-    v-model="newTask"
+    v-model="todo.title"
     class="form-control form-control-lg mb-3"
     type="text"
     autofocus
@@ -17,7 +17,12 @@ export default {
   name: 'AddTaskInput',
   data() {
     return {
-      newTask: '',
+      todo: {
+        id: null,
+        title: '',
+        createdAt: null,
+        updatedAt: null,
+      },
     }
   },
   computed: {
@@ -25,9 +30,12 @@ export default {
       return this.$store.state.addTodoVisible
     },
   },
-  // updated() {
-  //   this.$refs.AddTaskInput.focus()
-  // },
+  methods: {
+    addTodo() {
+      this.$store.dispatch('addTodo', this.todo)
+      this.todo.title = ''
+    },
+  },
 }
 </script>
 

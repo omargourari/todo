@@ -1,10 +1,11 @@
 const Todo = require("../models").Todo;
-const TodoItem = require("../models").TodoItem;
 
 module.exports = {
   create(req, res) {
     return Todo.create({
-      title: req.body.title,
+      title: req.params.title,
+      createdAt: req.params.createdAt,
+      updateddAt: req.params.updatedAt,
     })
       .then((todo) => res.status(201).send(todo))
       .catch((error) => res.status(400).send(error));
@@ -12,16 +13,7 @@ module.exports = {
 
   list(req, res) {
     return Todo.findAll({
-      include: [
-        {
-          model: TodoItem,
-          as: "todoItems",
-        },
-      ],
-      order: [
-        ["createdAt", "DESC"],
-        [{ model: TodoItem, as: "todoItems" }, "createdAt", "ASC"],
-      ],
+      order: [["createdAt", "DESC"]],
     })
       .then((todos) => res.status(200).send(todos))
       .catch((error) => res.status(500).send(error));

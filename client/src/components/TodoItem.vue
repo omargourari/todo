@@ -10,7 +10,6 @@ export default {
     },
   },
   setup(props) {
-    // vuex store access
     const store = useStore()
     const addTodo = (todo) => store.dispatch('addTodo', todo)
     const toggleTodo = (todo) => store.dispatch('toggleTodo', todo)
@@ -35,7 +34,6 @@ export default {
       e.target.blur()
     }
 
-    // expose to template
     return {
       toggleTodo,
       removeTodo,
@@ -48,28 +46,18 @@ export default {
 </script>
 
 <template>
-  <li tabindex="0">
-    <!-- <input
-      class="form-check-input me-3"
-      type="checkbox"
-      :checked="todo.done"
-      @change="toggleTodo(todo)"
-    /> -->
+  <li>
     <input
-      tabindex="-1"
       class="form-control form-control-plaintext p-1"
       :class="{ 'text-primary': todo.done }"
       type="text"
-      :value="todo.text"
-      @keyup.enter="addTodo"
-      @keyup.esc="cancelEdit"
-      @blur="doneEdit"
+      :value="todo.title"
     />
-    <!-- <button
+    <button
       type="button"
       class="btn-close btn-sm ms-2"
       @click="removeTodo(todo)"
-    ></button> -->
+    ></button>
   </li>
 </template>
 

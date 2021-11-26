@@ -1,72 +1,58 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-// const stage = process.env.NODE_ENV || 'development'
-
-const STORAGE_KEY = 'vue-todo-pwa'
-
-const defaultTodos = [
-  { id: 1, text: 'Learn JavaScript', done: true },
-  { id: 2, text: 'Learn Vue 3', done: true },
-  { id: 3, text: 'Learn Bootstrap 5', done: false },
-  { id: 4, text: 'Build something awesome!', done: false },
-]
+const stage = 'development'
+const env = require('../../env.js').server[stage]
 
 const state = {
-  todos: defaultTodos,
+  todos: {},
   addTodoVisible: false,
 }
 
 const mutations = {
-  addTodo(state, todo) {
-    state.todos.push(todo)
+  ADDTODO(state, todo) {
+    state.todos.unshift(todo)
   },
 
-  removeTodo(state, todo) {
+  REMOVETODO(state, todo) {
     state.todos.splice(state.todos.indexOf(todo), 1)
   },
 
-  editTodo(state, { todo, text = todo.text, done = todo.done }) {
-    const index = state.todos.indexOf(todo)
-
-    state.todos.splice(index, 1, {
-      ...todo,
-      text,
-      done,
-    })
+  GETALLTODOS(state, todos) {
+    state.todos = todos
   },
 }
 
 const actions = {
-  getAllTodos({ commit }) {
-    commit('getAllTodos')
-  },
-
-  addTodo: ({ commit }, id) => {
+  addTodo: ({ commit }, todo) => {
     axios
-      .get(`http://localhost:7070/api/todo/${id}`)
-      .then((response) => commit('addTodo', response.data))
+      .post(`${env.api_url}/api/todo/${todo.title}`)
+      .then((response) => {
+        commit('ADDTODO', response.data)
+      })
       .catch((e) => {
         console.log(e)
       })
   },
 
   removeTodo({ commit }, todo) {
-    commit('removeTodo', todo)
+    axios
+      .delete(`${env.api_url}/api/todo/${todo.id}`)
+      .then(() => {
+        commit('REMOVETODO', todo)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
   },
 
-  toggleTodo({ commit }, todo) {
-    commit('editTodo', { todo, done: !todo.done })
-  },
-
-  editTodo({ commit }, { todo, value }) {
-    commit('editTodo', { todo, text: value })
-  },
-
-  clearCompleted({ state, commit }) {
-    state.todos
-      .filter((todo) => todo.done)
-      .forEach((todo) => {
-        commit('removeTodo', todo)
+  getAllTodos({ commit }) {
+    axios
+      .get(`${env.api_url}/api/todos`)
+      .then((response) => {
+        commit('GETALLTODOS', response.data)
+      })
+      .catch((e) => {
+        console.log(e)
       })
   },
 
@@ -75,18 +61,8 @@ const actions = {
   },
 }
 
-// plugins
-const plugins = [
-  (store) => {
-    store.subscribe((mutation, { todos }) => {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
-    })
-  },
-]
-
 export default createStore({
   state,
   mutations,
   actions,
-  plugins,
 })
