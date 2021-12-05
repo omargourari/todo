@@ -7,7 +7,7 @@
     "serve": "nodemon --inspect server.js",
     "db:migrate": "sequelize-cli db:migrate",
     "db:drop": "sequelize-cli db:drop",
-    "start-db": "pg_ctl -D ./db/data -l ./db/data/logfile start",
+    "start-db": "pg_ctl -D ./data -l ./data/logfile start",
     "stop-db": "pg_ctl -D /usr/local/var/postgres stop"
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "grant-express": "^4.6.4",
+    "helmet": "^4.6.0",
     "nodemon": "^2.0.6",
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",

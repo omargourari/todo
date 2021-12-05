@@ -1,17 +1,23 @@
 <script>
 import Footer from '@components/Footer.vue'
 import Header from '@components/Header.vue'
-import Sidebar from '@components/side-bar.vue'
 
 export default {
   name: 'App',
   components: {
     Footer,
     Header,
-    Sidebar,
   },
   created: function () {
     this.$store.dispatch('getAllTodos')
+  },
+  mounted: function () {
+    this.$mousetrap.bind('enter', this.togglAddTaskInput)
+  },
+  methods: {
+    togglAddTaskInput() {
+      this.$store.dispatch('toggleAddTodoInput')
+    },
   },
 }
 </script>
@@ -19,7 +25,6 @@ export default {
 <template>
   <Header />
   <router-view></router-view>
-  <Sidebar />
   <Footer />
 </template>
 

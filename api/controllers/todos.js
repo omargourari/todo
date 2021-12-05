@@ -4,8 +4,6 @@ module.exports = {
   create(req, res) {
     return Todo.create({
       title: req.params.title,
-      createdAt: req.params.createdAt,
-      updateddAt: req.params.updatedAt,
     })
       .then((todo) => res.status(201).send(todo))
       .catch((error) => res.status(400).send(error));

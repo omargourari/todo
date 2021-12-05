@@ -1,5 +1,18 @@
 <script>
 import { useStore } from 'vuex'
+import { DateTime } from 'luxon'
+
+const units = ['year', 'month', 'week', 'day', 'hour', 'minute', 'second']
+
+const timeAgo = (date) => {
+  const dateTime = DateTime.fromISO(date)
+  const diff = dateTime.diffNow().shiftTo(...units)
+  const unit = units.find((unit) => diff.get(unit) !== 0) || 'second'
+  const relativeFormatter = new Intl.RelativeTimeFormat('en', {
+    numeric: 'auto',
+  })
+  return relativeFormatter.format(Math.trunc(diff.as(unit)), unit)
+}
 
 export default {
   name: 'TodoItem',
@@ -11,12 +24,8 @@ export default {
   },
   setup(props) {
     const store = useStore()
-    const addTodo = (todo) => store.dispatch('addTodo', todo)
-    const toggleTodo = (todo) => store.dispatch('toggleTodo', todo)
     const editTodo = (todo) => store.dispatch('editTodo', todo)
     const removeTodo = (todo) => store.dispatch('removeTodo', todo)
-
-    // methods
     function doneEdit(e) {
       const value = e.target.value.trim()
       const todo = props.todo
@@ -30,49 +39,42 @@ export default {
       }
     }
 
-    function cancelEdit(e) {
-      e.target.blur()
-    }
-
     return {
-      toggleTodo,
       removeTodo,
       doneEdit,
-      cancelEdit,
-      addTodo,
     }
+  },
+  computed: {
+    timeago() {
+      return timeAgo(this.todo.createdAt)
+    },
   },
 }
 </script>
 
 <template>
   <li>
-    <input
-      class="form-control form-control-plaintext p-1"
-      :class="{ 'text-primary': todo.done }"
-      type="text"
-      :value="todo.title"
-    />
-    <button
-      type="button"
-      class="btn-close btn-sm ms-2"
-      @click="removeTodo(todo)"
-    ></button>
+    <div class="todo">
+      <input type="text" :value="todo.title" />
+      <span class="timeago">{{ timeago }}</span>
+    </div>
+    <button type="button" class="btn-close" @click="removeTodo(todo)"></button>
   </li>
 </template>
 
-<style lang="scss" module>
+<style lang="scss" scoped>
 @import '~bootstrap/scss/bootstrap';
 
 li {
-  @extend .d-flex;
-  @extend .justify-content-between;
-  @extend .align-items-center;
   background-color: transparent;
-  padding: 4px 8px;
-  border-radius: 5px;
+  padding: 4px 0;
   font-size: 24px;
   font-family: 'Source Sans Pro', sans-serif;
+  display: flex;
+  flex-flow: row nowrap;
+  border-width: 0 0 1px 0;
+  border-style: solid;
+  border-color: rgba(10, 10, 10, 0.1);
 }
 
 li:focus,
@@ -85,11 +87,19 @@ li:active {
   border-color: transparent;
   color: white;
   cursor: pointer;
+}
 
+.todo {
+  display: flex;
+  flex-flow: column nowrap;
+  margin: auto auto auto 0;
+  width: 100%;
   input {
     background-color: transparent;
     outline-color: transparent;
     border-color: transparent;
+    padding: 0;
+    border: 0;
     &:hover,
     &:active,
     &:focus {
@@ -99,5 +109,14 @@ li:active {
       cursor: pointer;
     }
   }
+  .timeago {
+    font-size: 10px;
+    opacity: 0.4;
+  }
+}
+
+button {
+  margin: auto 8px auto auto;
+  font-size: 16px;
 }
 </style>

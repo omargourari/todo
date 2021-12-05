@@ -1,0 +1,11 @@
+{
+  "title": "todo",
+  "description": "Todo app for Omar's daily tasks",
+  "server": {
+    "development": {
+      "host": "localhost",
+      "port": "7070",
+      "api_url": "http://localhost:7070"
+    }
+  }
+}

@@ -26,7 +26,7 @@ for (const alias in aliases) {
   const aliasHasExtension = /\.\w+$/.test(aliasTo)
   module.exports.jest[`^${alias}$`] = aliasHasExtension
     ? `<rootDir>/${aliasTo}`
-    : `    <rootDir>/${aliasTo}/index.js`
+    : `<rootDir>/${aliasTo}/index.js`
   module.exports.jest[`^${alias}/(.*)$`] = `<rootDir>/${aliasTo}/$1`
   module.exports.jsconfig[alias + '/*'] = [aliasTo + '/*']
   module.exports.jsconfig[alias] = aliasTo.includes('/index.')
@@ -40,7 +40,7 @@ for (const alias in aliases) {
       ]
 }
 
-const jsconfigTemplate = require('./jsconfig.template') || {}
+const jsconfigTemplate = require('./_jsconfig.template') || {}
 const jsconfigPath = path.resolve(__dirname, 'jsconfig.json')
 
 fs.writeFile(

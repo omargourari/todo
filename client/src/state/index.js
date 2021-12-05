@@ -1,7 +1,5 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
-const stage = 'development'
-const env = require('../../env.js').server[stage]
 
 const state = {
   todos: {},
@@ -25,7 +23,7 @@ const mutations = {
 const actions = {
   addTodo: ({ commit }, todo) => {
     axios
-      .post(`${env.api_url}/api/todo/${todo.title}`)
+      .post(`/api/todo/${todo.title}`)
       .then((response) => {
         commit('ADDTODO', response.data)
       })
@@ -36,7 +34,7 @@ const actions = {
 
   removeTodo({ commit }, todo) {
     axios
-      .delete(`${env.api_url}/api/todo/${todo.id}`)
+      .delete(`/api/todo/${todo.id}`)
       .then(() => {
         commit('REMOVETODO', todo)
       })
@@ -47,7 +45,7 @@ const actions = {
 
   getAllTodos({ commit }) {
     axios
-      .get(`${env.api_url}/api/todos`)
+      .get('/api/todos')
       .then((response) => {
         commit('GETALLTODOS', response.data)
       })

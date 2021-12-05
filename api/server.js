@@ -1,7 +1,9 @@
-const express = require("express");
-const compression = require("compression");
 const bodyParser = require("body-parser");
+const compression = require("compression");
 const cors = require("cors");
+const express = require("express");
+// const helmet = require("helmet");
+
 const app = express();
 const env = require("./env.js");
 const models = require("./models");
@@ -22,6 +24,8 @@ app.use(express.static("dist"), (res, req, next) => {
 
 // if (NODE_ENV !== "production") {}
 app.use(cors());
+
+// app.use(helmet());
 
 require("./routes")(app);
 // Launch app to listen to specified port

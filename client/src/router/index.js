@@ -1,23 +1,22 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@views/Home.vue'
 
 const routes = [
   {
-    path: '/:filter',
+    path: '/',
     name: 'Home',
     component: Home,
-    props: true,
   },
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 })
 
-router.beforeEach((to) => {
-  const params = ['all', 'active', 'completed']
-  if (params.every((param) => param !== to.params.filter)) return '/all'
-})
+// router.beforeEach((to) => {
+//   const params = ['all', 'active', 'completed']
+//   if (params.every((param) => param !== to.params.filter)) return '/all'
+// })
 
 export default router
